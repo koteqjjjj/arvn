@@ -5455,6 +5455,7 @@ function D.setMinimized(v)
 		end
 	end
 	D.applyBackdrop()
+	setUnlock(D.menuOpen and not v)
 	D.fire("__minimized")
 end
 
@@ -8051,7 +8052,8 @@ D.on(RunService.RenderStepped, function()
 end)
 
 function D.mouseFree(v)
-	setUnlock(v or D.menuOpen)
+	local minimized = D.W_STATE and D.W_STATE.minimized
+	setUnlock((v or D.menuOpen) and not minimized)
 end
 
 function D.setMenu(v)
@@ -8080,7 +8082,7 @@ function D.setMenu(v)
 		end
 	end
 	D.play("open", v and 1 or 0.82)
-	setUnlock(v)
+	setUnlock(v and not (D.W_STATE and D.W_STATE.minimized))
 	D.applyBackdrop()
 	D.refreshOverlays()
 	D.fire("__menu")
